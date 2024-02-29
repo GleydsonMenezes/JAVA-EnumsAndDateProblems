@@ -2,15 +2,22 @@ package application;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
+import entities.Client;
 import entities.Comment;
 import entities.Department;
 import entities.HourContract;
+import entities.Order;
+import entities.OrderItem;
 import entities.Post;
+import entities.Product;
 import entities.Worker;
+import entities.enums.OrderStatus;
 import entities.enums.WorkerLevel;
 
 public class Program {
@@ -26,10 +33,10 @@ public class Program {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		
-		
 		System.out.println("Enter the exercise number: \n"
 				+ "1 - Worker Contract\n"
 				+ "2 - Post/Comment \n"
+				+ "3 - Order/client \n"
 				+ "0 - Exit");
 		
 		int n = sc.nextInt();
@@ -88,6 +95,41 @@ public class Program {
 				p1.addComent(c2);
 				
 				System.out.println(p1);
+				
+				break;
+			
+			case 3:
+				
+				sc.nextLine();
+				System.out.println("Enter client data: ");
+				System.out.print("Name: ");
+				String name = sc.nextLine();
+				System.out.print("Email: ");
+				String email = sc.nextLine();
+				System.out.print("Birth Date (DD/MM/YYYY)");
+				Date birthDate = sdf.parse(sc.next());
+				Client client = new Client(name, email, birthDate);
+				System.out.println("Enter order data: ");
+				System.out.print("Status: ");
+				OrderStatus status = OrderStatus.valueOf(sc.next());
+				Order order = new Order(new Date(), status, client);
+				System.out.println("how many items to this order? ");
+				n = sc.nextInt();
+				sc.nextLine();
+				for (int i = 1; i <= n; i++) {
+					System.out.println("Enter #"+ i + " item data: ");
+					System.out.print("Product name: ");
+					String productName = sc.nextLine();
+					System.out.print("Product price: ");
+					double productPrice = sc.nextDouble();
+					System.out.println("Quantity: ");
+					int quantity = sc.nextInt();
+					sc.nextLine();
+					order.addItem(new OrderItem(quantity,productPrice, new Product(productName, productPrice)));
+				}
+				
+				System.out.println("ORDER SUMMARY:");
+				System.out.println(order);
 				
 				break;
 		}
